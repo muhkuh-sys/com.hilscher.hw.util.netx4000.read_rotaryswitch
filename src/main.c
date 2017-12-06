@@ -51,6 +51,20 @@ typedef struct NETX90MPW_HWCONFIG_HIFMEM_PRIORITY_CTRL_STRUCT
 	unsigned long  ulExtmem_prio_accesstime_ctrl;
 } NETX90MPW_HWCONFIG_HIFMEM_PRIORITY_CTRL_T;
 
+
+typedef struct NETX90MPW_HWCONFIG_DPM0_STRUCT
+{
+	unsigned long ul_dpm_cfg0x0;
+	unsigned long ul_dpm_if_cfg;
+	unsigned long ul_dpm_pio_cfg0;
+	unsigned long ul_dpm_pio_cfg1;
+	unsigned long ul_dpm_addr_cfg;
+	unsigned long ul_dpm_timing_cfg;
+	unsigned long ul_dpm_rdy_cfg;
+	unsigned long ul_dpm_misc_cfg;
+	unsigned long ul_dpm_io_cfg_misc;
+} NETX90MPW_HWCONFIG_DPM0_T;
+
 typedef struct NETX90MPW_HWCONFIG_STRUCT
 {
 	NETX90MPW_HWCONFIG_MMIO_T tMmio;
@@ -60,6 +74,7 @@ typedef struct NETX90MPW_HWCONFIG_STRUCT
 	NETX90MPW_HWCONFIG_HIF_ASYNCMEM_CTRL_T tHifAsyncmemCtrl;
 	NETX90MPW_HWCONFIG_HIF_SDRAM_CTRL_T tHifSdramCtrl;
 	NETX90MPW_HWCONFIG_HIFMEM_PRIORITY_CTRL_T tHifmemPriorityCtrl;
+	NETX90MPW_HWCONFIG_DPM0_T tDpm0;
 } NETX90MPW_HWCONFIG_T;
 
 
@@ -139,6 +154,20 @@ static void apply_hif_io_ctrl(const NETX90MPW_HWCONFIG_HIF_IO_CTRL_T * const ptC
 }
 
 
+static void apply_dpm0(const NETX90MPW_HWCONFIG_DPM0_T * const ptCfg)
+{
+	HOSTDEF(ptDpm0ComArea);
+	ptDpm0ComArea->ulDpm_if_cfg      = ptCfg->ul_dpm_if_cfg;
+	ptDpm0ComArea->aulDpm_pio_cfg[0] = ptCfg->ul_dpm_pio_cfg0;
+	ptDpm0ComArea->aulDpm_pio_cfg[1] = ptCfg->ul_dpm_pio_cfg1;
+	ptDpm0ComArea->ulDpm_addr_cfg    = ptCfg->ul_dpm_addr_cfg;
+	ptDpm0ComArea->ulDpm_timing_cfg  = ptCfg->ul_dpm_timing_cfg;
+	ptDpm0ComArea->ulDpm_rdy_cfg     = ptCfg->ul_dpm_rdy_cfg;
+	ptDpm0ComArea->ulDpm_misc_cfg    = ptCfg->ul_dpm_misc_cfg;
+	ptDpm0ComArea->ulDpm_io_cfg_misc = ptCfg->ul_dpm_io_cfg_misc;
+	/* write last */
+	ptDpm0ComArea->ulDpm_cfg0x0      = ptCfg->ul_dpm_cfg0x0;
+}
 
 typedef struct NX90_HIF_ASYNCMEM_CTRL_AREA_STRUCT
 {
@@ -218,4 +247,5 @@ void __attribute__ ((section (".init_code"))) start(const NETX90MPW_HWCONFIG_T *
 	apply_hif_asyncmem_ctrl( &(ptHwconfig->tHifAsyncmemCtrl) );
 	apply_hif_sdram_ctrl( &(ptHwconfig->tHifSdramCtrl) );
 	apply_hifmem_priority_ctrl( &(ptHwconfig->tHifmemPriorityCtrl) );
+	apply_dpm0( &(ptHwconfig->tDpm0) );
 }

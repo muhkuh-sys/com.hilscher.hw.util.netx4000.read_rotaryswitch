@@ -49,6 +49,7 @@ atEnv.DEFAULT.Version('#targets/version/version.h', 'templates/version.h')
 sources = """
 	src/header.c
 	src/main.c
+	src/setup_dpm.c
 """
 
 # The list of include folders. Here it is used for all files.

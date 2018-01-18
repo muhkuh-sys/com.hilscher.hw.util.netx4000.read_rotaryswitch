@@ -62,7 +62,8 @@ typedef struct NETX90MPW_HWCONFIG_STRUCT
 	NETX90MPW_HWCONFIG_HIF_ASYNCMEM_CTRL_T tHifAsyncmemCtrl;
 	NETX90MPW_HWCONFIG_HIF_SDRAM_CTRL_T tHifSdramCtrl;
 	NETX90MPW_HWCONFIG_HIFMEM_PRIORITY_CTRL_T tHifmemPriorityCtrl;
-	NETX90MPW_HWCONFIG_DPM_T tDpmCfg;
+	NETX90MPW_HWCONFIG_DPM_T tDpm0Cfg;
+	NETX90MPW_HWCONFIG_DPM_T tDpm1Cfg;
 } NETX90MPW_HWCONFIG_T;
 
 
@@ -189,6 +190,15 @@ static void apply_hif_sdram_ctrl(const NETX90MPW_HWCONFIG_HIF_SDRAM_CTRL_T * con
 	ptHifSdramCtrlArea->ulSdram_general_ctrl = ptCfg->ulSdram_general_ctrl;
 }
 
+/* If Ctrl_en is 1, wait until sdram_ready is 1 */
+static void hif_sdram_wait_for_ready(void)
+{
+	HOSTDEF(ptHifSdramCtrlArea);
+	if ((ptHifSdramCtrlArea->ulSdram_general_ctrl & MSK_NX90_sdram_general_ctrl_ctrl_en) != 0)
+	{
+		while ((ptHifSdramCtrlArea->ulSdram_general_ctrl &  MSK_NX90_sdram_general_ctrl_sdram_ready) == 0 ) {}
+	}
+}
 
 
 typedef struct NX90_HIFMEM_PRIORITY_CTRL_AREA_STRUCT
@@ -220,8 +230,22 @@ void __attribute__ ((section (".init_code"))) start(const NETX90MPW_HWCONFIG_T *
 	apply_hif_asyncmem_ctrl( &(ptHwconfig->tHifAsyncmemCtrl) );
 	apply_hif_sdram_ctrl( &(ptHwconfig->tHifSdramCtrl) );
 	apply_hifmem_priority_ctrl( &(ptHwconfig->tHifmemPriorityCtrl) );
-	if (ptHwconfig->tDpmCfg.ulEnable != 0) 
+	if (ptHwconfig->tDpm0Cfg.ulEnable != 0) 
 	{
-		init_pdpm( &(ptHwconfig->tDpmCfg) );
+		if ((ptHwconfig->tHifIoCtrl.ulHif_io_cfg & MSK_NX90_hif_io_cfg_sel_dpm_serial) == 0)
+		{
+			init_pdpm( &(ptHwconfig->tDpm0Cfg) );
+		}
+		else
+		{
+			init_sdpm( &(ptHwconfig->tDpm0Cfg), 0 );
+			if (ptHwconfig->tDpm1Cfg.ulEnable != 0) 
+			{
+				init_sdpm( &(ptHwconfig->tDpm1Cfg), 1 );
+			}
+		}
+		
 	}
+	
+	hif_sdram_wait_for_ready();
 }

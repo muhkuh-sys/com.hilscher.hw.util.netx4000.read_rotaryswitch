@@ -49,7 +49,6 @@ atEnv.DEFAULT.Version('#targets/version/version.h', 'templates/version.h')
 sources = """
 	src/header.c
 	src/main.c
-	src/setup_dpm.c
 """
 
 # The list of include folders. Here it is used for all files.
@@ -77,7 +76,11 @@ atSnippet = {
     'author_name': 'Muhkuh team',
     'author_url': 'https://github.com/muhkuh-sys',
     'description': 'Apply the hardware configuration on a netX90 MPW.',
-    'categories': ['netx90MPW', 'booting']
+    'categories': ['netx90MPW', 'booting'],
+    'parameter': {
+        'CONFIGURATION_ADDRESS': {'help': 'The address of the hardware config.', 'default': 0}
+    }
+
 }
 strArtifactPath = 'targets/snippets/%s/%s/%s' % ('/'.join(aArtifactGroupReverse), atSnippet['artifact'], PROJECT_VERSION)
 snippet_netx90_mpw_com = tEnv.HBootSnippet('%s/%s-%s.xml' % (strArtifactPath, atSnippet['artifact'], PROJECT_VERSION), tTmp, PARAMETER=atSnippet)

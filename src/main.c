@@ -1,6 +1,5 @@
 #include "netx_io_areas.h"
 #include "rdy_run.h"
-#include "setup_dpm.h"
 
 
 /* Define the structures for the hwconfig data. */

@@ -1,4 +1,5 @@
-<!-- Load the show_hwconfig program. -->
+<!-- Load the apply_hwconfig program. 
+${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT_VERSION_MICRO}.${PROJECT_VERSION_VCS} -->
 <Data>
 	<Hex address="${%LOAD_ADDRESS%}">
 ${%PROGRAM_DATA%}

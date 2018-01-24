@@ -40,6 +40,7 @@ SConscript('platform/SConscript')
 # Get the source code version from the VCS.
 #
 atEnv.DEFAULT.Version('#targets/version/version.h', 'templates/version.h')
+atEnv.DEFAULT.Version('#targets/hboot_snippet.xml', 'templates/hboot_snippet.xml')
 
 
 #----------------------------------------------------------------------------
@@ -61,7 +62,7 @@ tSrc = tEnv.SetBuildPath('targets/netx90_com_intram', 'src', sources)
 tElf = tEnv.Elf('targets/netx90_com_intram/apply_hwconfig_netx90_com_intram.elf', tSrc + tEnv['PLATFORM_LIBRARY'])
 tTxt = tEnv.ObjDump('targets/netx90_com_intram/apply_hwconfig_netx90_com_intram.txt', tElf, OBJDUMP_FLAGS=['--disassemble', '--source', '--all-headers', '--wide'])
 tBin = tEnv.ObjCopy('targets/netx90_com_intram/apply_hwconfig_netx90_com_intram.bin', tElf)
-tTmp = tEnv.GccSymbolTemplate('targets/netx90_com_intram/snippet.xml', tElf, GCCSYMBOLTEMPLATE_TEMPLATE='templates/hboot_snippet.xml', GCCSYMBOLTEMPLATE_BINFILE=tBin[0])
+tTmp = tEnv.GccSymbolTemplate('targets/netx90_com_intram/snippet.xml', tElf, GCCSYMBOLTEMPLATE_TEMPLATE='targets/hboot_snippet.xml', GCCSYMBOLTEMPLATE_BINFILE=tBin[0])
 
 # Create the snippet from the parameters.
 global PROJECT_VERSION

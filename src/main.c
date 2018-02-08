@@ -61,8 +61,8 @@ typedef struct NETX90MPW_HWCONFIG_STRUCT
 	NETX90MPW_HWCONFIG_HIF_ASYNCMEM_CTRL_T tHifAsyncmemCtrl;
 	NETX90MPW_HWCONFIG_HIF_SDRAM_CTRL_T tHifSdramCtrl;
 	NETX90MPW_HWCONFIG_HIFMEM_PRIORITY_CTRL_T tHifmemPriorityCtrl;
+	NX90_MLED_CTRL_AREA_T tMledCtrl;
 } NETX90MPW_HWCONFIG_T;
-
 
 
 static void apply_mmios(const NETX90MPW_HWCONFIG_MMIO_T * const ptCfg)
@@ -71,8 +71,7 @@ static void apply_mmios(const NETX90MPW_HWCONFIG_MMIO_T * const ptCfg)
 	HOSTDEF(ptMmioCtrlArea);
 	unsigned int uiCnt;
 	unsigned long ulValue;
-
-
+	
 	/* Loop over all MMIO pins and set the complete register. */
 	for(uiCnt=0; uiCnt<16; uiCnt++)
 	{
@@ -82,6 +81,20 @@ static void apply_mmios(const NETX90MPW_HWCONFIG_MMIO_T * const ptCfg)
 	}
 }
 
+
+static void apply_mled(const NX90_MLED_CTRL_AREA_T * const ptCfg )
+{
+	HOSTDEF(ptMledCtrlComArea);
+	int i;
+	
+	for (i=0; i<=7; i++) 
+	{
+		ptMledCtrlComArea->aulMled_ctrl_output_sel[i]     = ptCfg->aulMled_ctrl_output_sel[i];
+		ptMledCtrlComArea->aulMled_ctrl_output_on_time[i] = ptCfg->aulMled_ctrl_output_on_time[i];
+	}
+	ptMledCtrlComArea->ulMled_ctrl_line0  = ptCfg->ulMled_ctrl_line0;
+	ptMledCtrlComArea->ulMled_ctrl_cfg    = ptCfg->ulMled_ctrl_cfg;
+}
 
 
 static void apply_pad_ctrl(const NETX90MPW_HWCONFIG_PAD_CTRL_T * const ptCfg)
@@ -227,6 +240,6 @@ void __attribute__ ((section (".init_code"))) start(const NETX90MPW_HWCONFIG_T *
 	apply_hif_asyncmem_ctrl( &(ptHwconfig->tHifAsyncmemCtrl) );
 	apply_hif_sdram_ctrl( &(ptHwconfig->tHifSdramCtrl) );
 	apply_hifmem_priority_ctrl( &(ptHwconfig->tHifmemPriorityCtrl) );
-    
+	apply_mled( &(ptHwconfig->tMledCtrl) );
 	hif_sdram_wait_for_ready();
 }

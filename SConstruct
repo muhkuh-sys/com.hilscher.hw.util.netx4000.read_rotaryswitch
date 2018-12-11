@@ -89,7 +89,7 @@ atSnippet90 = {
     'description': 'Read rotary switches make them available on netX90',
     'categories': ['netx90', 'booting'],
     'parameter': {
-        'CONFIGURATION_ADDRESS': {'help': 'The address of the hardware config.', 'default': '0x0400001a'},
+        'CONFIGURATION_ADDRESS': {'help': 'The address of the hardware config.'},
         'MMIO_SELECT': {'help': 'Handover parameter for parsing mmios.'}
     }
 
@@ -127,7 +127,8 @@ atSnippet4000 = {
     'description': 'Read rotary switches make them available on netX4000.',
     'categories': ['netx4000', 'booting'],
     'parameter': {
-        'CONFIGURATION_ADDRESS': {'help': 'The address of the hardware config.', 'default': 0}
+        'CONFIGURATION_ADDRESS': {'help': 'The address of the hardware config.', 'default': '0x0400001a'},
+        'MMIO_SELECT': {'help': 'Handover parameter for parsing mmios.'}
     }
 
 }

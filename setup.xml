@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="mbs/setup2html.xsl"?>
 
-<muhkuh_buildsystem project="org.muhkuh.hboot.sniplib-apply_hwconfig">
+<muhkuh_buildsystem project="com.hilscher.hw.util.netx4000.read_rotaryswitch">
 	<project_version>1.0.0</project_version>
 
 	<scons>

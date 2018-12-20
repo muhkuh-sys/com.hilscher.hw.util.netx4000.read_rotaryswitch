@@ -111,7 +111,7 @@ proc probe {} {
       set PORTCONTROL_P6_1  0xfb100184
 
 	  # Set snippet file name, start adress and execution adress
-      set filename_snippet_read_rotaryswitch_netx4000_bin read_rotaryswitch_snippet_netx4000.bin
+      set filename_snippet_read_rotaryswitch_netx4000_bin ../../targets/netx4000/read_rotaryswitch_snippet_netx4000.bin
 	  set snippet_load_address 0x04020000
       set snippet_exec_address 0x0402001d
 

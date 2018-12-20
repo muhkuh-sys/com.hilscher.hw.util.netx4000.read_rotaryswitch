@@ -138,5 +138,5 @@ snippet_netx4000_com = tEnv4000.HBootSnippet('%s/%s-%s.xml' % (strArtifactPath40
 # Create the POM file.
 tPOM4000 = tEnv4000.POMTemplate('%s/%s-%s.pom' % (strArtifactPath4000, atSnippet4000['artifact'], PROJECT_VERSION), 'templates/pom.xml', POM_TEMPLATE_GROUP=atSnippet4000['group'], POM_TEMPLATE_ARTIFACT=atSnippet4000['artifact'], POM_TEMPLATE_VERSION=atSnippet4000['version'], POM_TEMPLATE_PACKAGING='xml')
 
-# Demo
-hboot_netx4000_demo = tEnv4000.HBootImage('targets/hboot_netx4000_demo.bin', 'demo/test_snippet_netx4000_rotary.xml')
+# Create binaries for verification
+hboot_netx4000_test02 = tEnv4000.HBootImage('targets/verification/test02/test_snippet_netx4000_rotary.bin', 'verification/test02/test_snippet_netx4000_rotary.xml')
